@@ -43,6 +43,64 @@ export const CommentContextProvider=({children})=>{
                 //         return comment
                 //     }
                 // })
+            case 'changeEdit':
+                return {
+                    replies : state.replies.map((reply,id)=>{
+                        if(reply.id == action.payload.editableId)
+                            return {...reply,editable:true}
+                        else
+                            return reply
+                        
+                    }),
+                    comments : state.comments.map((comment,id)=>{
+                        if(comment.id == action.payload.editableId)
+                            return {...comment,editable:true}
+                        else
+                            return comment
+                    })
+                }
+                case 'cancel':
+                    return {
+                        replies : state.replies.map((reply,id)=>{
+                            if(reply.id == action.payload.cancelId)
+                                return {...reply,editable:false}
+                            else
+                                return reply
+                            
+                        }),
+                        comments : state.comments.map((comment,id)=>{
+                            if(comment.id == action.payload.cancelId)
+                                return {...comment,editable:false}
+                            else
+                                return comment
+                        })
+                    }
+                    case 'delete':
+                        return {
+                            replies : state.replies.filter((reply,id)=>{
+                                return reply.id!=action.payload.deleteId
+                                
+                            }),
+                            comments : state.comments.filter((comment,id)=>{
+                                return comment.id != action.payload.deleteId
+                            })
+                        }
+            case 'save':
+                return {
+                    replies : state.replies.map((reply,id)=>{
+                        if(reply.id == action.payload.saveId)
+                            return {...reply,text:action.payload.newText,editable:false}
+                        else
+                            return reply
+                        
+                    }),
+                    comments : state.comments.map((comment,id)=>{
+                        if(comment.id == action.payload.saveId)
+                            return {...comment,text:action.payload.newText,editable:false}
+                        else
+                            return comment
+                    })
+                }
             default:
                 return state
         }
